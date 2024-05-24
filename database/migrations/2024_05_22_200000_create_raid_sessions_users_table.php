@@ -16,6 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('raid_session_id');
             $table->unsignedBigInteger('current_code_id')->nullable();
             $table->string('nickname')->nullable();
+            $table->string('avatar');
             $table->integer('total_guess_count')->default(0);
             $table->ipAddress('ip_address');
             $table->timestamps();

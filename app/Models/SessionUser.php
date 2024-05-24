@@ -17,5 +17,17 @@ class SessionUser extends Model
         'current_code_id',
         'total_guess_count',
         'ip_address',
+        'avatar',
     ];
+
+    // when retrieving the avatar, we want to make sure it's always a full URL
+    public function getAvatarAttribute($value)
+    {
+        return asset($value);
+    }
+
+    public function currentCode()
+    {
+        return $this->belongsTo(Code::class, 'current_code_id');
+    }
 }
