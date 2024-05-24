@@ -14,12 +14,14 @@ return new class extends Migration
         Schema::create('raid_sessions_users', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('raid_session_id');
+            $table->unsignedBigInteger('current_code_id')->nullable();
             $table->string('nickname')->nullable();
-            $table->unsignedBigInteger('code_id')->nullable();
+            $table->integer('total_guess_count')->default(0);
+            $table->ipAddress('ip_address');
             $table->timestamps();
 
             $table->foreign('raid_session_id')->references('id')->on('raid_sessions')->onDelete('cascade');
-            $table->foreign('code_id')->references('id')->on('codes')->onDelete('set null');
+            $table->foreign('current_code_id')->references('id')->on('codes')->onDelete('set null');
         });
     }
 
