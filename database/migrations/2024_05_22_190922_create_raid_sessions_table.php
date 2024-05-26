@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('server')->nullable();
             $table->string('location')->nullable();
             $table->unsignedBigInteger('master_code_id')->nullable();
+            $table->timestamp('started_at')->nullable();
             $table->timestamps();
 
             $table->foreign('master_code_id')->references('id')->on('codes')->onDelete('set null');

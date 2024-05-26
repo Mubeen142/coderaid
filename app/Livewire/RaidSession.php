@@ -48,6 +48,18 @@ class RaidSession extends Component
 
     public function nextCode()
     {
+        if(!$this->session->started_at) {
+            $this->session->update([
+                'started_at' => now(),
+            ]);
+        }
+
+        if(!$this->user->started_at) {
+            $this->user->update([
+                'started_at' => now(),
+            ]);
+        }
+        
         $this->user->increment('total_guess_count');
         $this->user->update([
             'current_code_id' => min(10000, $this->user->current_code_id + 1),

@@ -18,6 +18,12 @@ class SessionUser extends Model
         'total_guess_count',
         'ip_address',
         'avatar',
+        'started_at',
+    ];
+
+    protected $casts = [
+        'total_guess_count' => 'integer',
+        'started_at' => 'datetime',
     ];
 
     // when retrieving the avatar, we want to make sure it's always a full URL

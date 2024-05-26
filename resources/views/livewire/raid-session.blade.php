@@ -32,8 +32,24 @@
     </div>
     </form>
     @else
-    <div class="p-6 mb-4 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+    @if($user)
+    <div class="p-4 flex justify-evenly mb-4 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+        @foreach($session->getPastCodes(3) as $code)
+        <p class="text-base text-gray-400">
+            {{ $code->code }}
+        </p>
+        @endforeach
+        <p class="text-base text-white">
+            {{ $session->getHighestUser()->currentCode->code }}
+        </p>
+        @foreach($session->getFutureCodes(3) as $code)
+        <p class="text-base text-gray-400">
+            {{ $code->code }}
+        </p>
+        @endforeach
+    </div>
 
+    <div class="p-6 mb-4 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
         <div class="flex justify-between p-3">
             <svg wire:click="previousCode()" class="w-16 h-16 mr-4 text-gray-800 dark:text-white cursor-pointer" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
                 <path fill-rule="evenodd" d="M13.729 5.575c1.304-1.074 3.27-.146 3.27 1.544v9.762c0 1.69-1.966 2.618-3.27 1.544l-5.927-4.881a2 2 0 0 1 0-3.088l5.927-4.88Z" clip-rule="evenodd"/>
@@ -56,7 +72,7 @@
 
         <dl class="max-w-md text-gray-900 divide-y divide-gray-200 dark:text-white dark:divide-gray-700">
             <div class="flex flex-col pb-3">
-                <dt class="mb-1 text-gray-500 md:text-lg dark:text-gray-400">Session {{ request()->cookie($session->token) }}</dt>
+                <dt class="mb-1 text-gray-500 md:text-lg dark:text-gray-400">Session</dt>
                 <dd class="text-lg font-semibold overflow-hidden text-ellipsis whitespace-nowrap cursor-pointer" onclick="copySessionUrl()" data-tooltip-target="tooltip-copy-session">
                     {{ route('session.view', $session) }}
                     <div id="tooltip-copy-session" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
@@ -106,6 +122,25 @@
             @endforeach
         </ul>
     </div>
+    @else
+    <form wire:submit="createUser">
+        <div class="p-6 max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+            <div class="mb-4">
+                <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nickname</label>
+                <input type="text" wire:model="nickname" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">Enter your nickname</p>            
+            </div>
+            <div class="flex justify-end">
+                <button type="submit" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-primary-700 rounded-lg hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 dark:bg-primary-700 dark:hover:bg-primary-800 dark:focus:ring-primary-800">
+                    Start Raiding
+                    <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </form>
+    @endif
     @endif
 
     <script>
@@ -114,5 +149,23 @@
             navigator.clipboard.writeText('{{ route('session.view', $session) }}');
             document.getElementById('session_copy_text').innerText = 'Copied';
         }
+
+        // sessionTimerStart();
+
+        // function sessionTimerStart()
+        // {
+        //     // start a timer that shows how long the session has been running and count up from there
+        //     const start = new Date('{{ $session->started_at }}');
+        //     setInterval(() => {
+        //         const now = new Date();
+        //         const elapsed = now - start;
+
+        //         const hours = Math.floor((elapsed % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        //         const minutes = Math.floor((elapsed % (1000 * 60 * 60)) / (1000 * 60));
+        //         const seconds = Math.floor((elapsed % (1000 * 60)) / 1000);
+
+        //         document.getElementById('session_countdown').innerText = `${hours}h ${minutes}m ${seconds}s`;
+        //     }, 1000);
+        // }
     </script>
 </div>

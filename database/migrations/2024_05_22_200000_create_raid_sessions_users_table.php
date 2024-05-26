@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('avatar');
             $table->integer('total_guess_count')->default(0);
             $table->ipAddress('ip_address');
+            $table->timestamp('started_at')->nullable();
             $table->timestamps();
 
             $table->foreign('raid_session_id')->references('id')->on('raid_sessions')->onDelete('cascade');
