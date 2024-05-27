@@ -18,13 +18,24 @@ class SessionUser extends Model
         'total_guess_count',
         'ip_address',
         'avatar',
+        'confetti',
         'started_at',
     ];
 
     protected $casts = [
         'total_guess_count' => 'integer',
         'started_at' => 'datetime',
+        'confetti' => 'boolean',
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($user) {
+            $user->avatar = "assets/img/avatars/AV" . rand(1, 50) . ".png";
+        });
+    }
 
     // when retrieving the avatar, we want to make sure it's always a full URL
     public function getAvatarAttribute($value)
@@ -35,5 +46,12 @@ class SessionUser extends Model
     public function currentCode()
     {
         return $this->belongsTo(Code::class, 'current_code_id');
+    }
+
+    public function confettiLaunched()
+    {
+        $this->update([
+            'confetti' => true,
+        ]);
     }
 }

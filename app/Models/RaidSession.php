@@ -19,10 +19,20 @@ class RaidSession extends Model
         'location',
         'master_code_id',
         'started_at',
+        'session_password',
     ];
 
     protected $casts = [
         'started_at' => 'datetime',
+    ];
+
+    /**
+     * The attributes that should be hidden for serialization.
+     *
+     * @var array<int, string>
+     */
+    protected $hidden = [
+        'session_password',
     ];
     
     protected static function boot()
@@ -47,6 +57,11 @@ class RaidSession extends Model
     public function getHighestCode()
     {
         return $this->getHighestUser()->currentCode;
+    }
+
+    public function masterCode()
+    {
+        return $this->belongsTo(Code::class, 'master_code_id', 'id');
     }
 
     public function getPastCodes(int $limit)

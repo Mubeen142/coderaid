@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('name')->nullable();
             $table->string('server')->nullable();
             $table->string('location')->nullable();
+            $table->string('session_password')->nullable();
             $table->unsignedBigInteger('master_code_id')->nullable();
             $table->timestamp('started_at')->nullable();
             $table->timestamps();
